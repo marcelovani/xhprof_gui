@@ -404,6 +404,7 @@ a.callgraph:link {
     border-collapse: collapse;
     text-align: left;
     border: 1px solid #ececec;
+    margin-top: 10px;
 }
 
 .box-table-title{

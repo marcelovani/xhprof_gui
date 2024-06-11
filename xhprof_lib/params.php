@@ -21,7 +21,7 @@ $params = array( // run id param
   // Turn on extra features to allow debugging.
   'debug' => array(XHPROF_BOOL_PARAM, 'false'),
   // Show links.
-  'links' => array(XHPROF_BOOL_PARAM, 'false'),
+  'links' => array(XHPROF_BOOL_PARAM, 'true'),
   // whether to show critical_path
   'critical' => array(XHPROF_BOOL_PARAM, 'true'),
   // first run in diff mode.
