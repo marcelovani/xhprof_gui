@@ -1,3 +1,5 @@
 /nbproject
 .idea
 config.php
+docker/traces
+
