@@ -125,3 +125,121 @@ function getFilter($filterName)
     }
     return $serverFilter;
 }
+
+/**
+ * Helper for home button.
+ *
+ * @return string
+ */
+function get_home_button()  {
+  $qs = '';
+  foreach (parse_qs() as $k => $v) {
+    $qs .= sprintf('%s=%s&', $k, $v);
+  }
+  $url = '/?' . trim($qs, '&');
+  $button  = '<span class="button"><a href="/">XH GUI</a></span>';
+
+  return $button;
+}
+
+/**
+ * Helper to parse the query string.
+ *
+ * @return array
+ */
+function parse_qs() {
+  $parsed_url = parse_url($_SERVER['REQUEST_URI']);
+  $qs = $parsed_url['query'];
+
+  // Convert query string to array.
+  $parsed_qs = [];
+  foreach (explode('&', $qs) as $param) {
+    $kv = explode('=', $param);
+    if (isset($kv[1])) {
+      $parsed_qs[$kv[0]] = $kv[1];
+    }
+  }
+
+  return $parsed_qs;
+}
+
+
+/**
+ * On/Off button to show/hide internal php functions.
+ *
+ * @param $title
+ * @return string
+ */
+function get_show_internal_button($title, $default = 0)  {
+  $parsed_qs = parse_qs();
+  if (!isset($parsed_qs['show_internal'])) {
+    $parsed_qs['show_internal'] = $default;
+  }
+  if ((int) $parsed_qs['show_internal'] == 0) {
+    $class = 'off';
+    $parsed_qs['show_internal'] = 1;
+  }
+  else {
+    $class = 'on';
+    $parsed_qs['show_internal'] = 0;
+  }
+  $button = '<span class="show_internal">
+  <input type="checkbox" ' . (($parsed_qs['show_internal'] == 0) ? 'checked="checked"' : '') . '/>
+  <a href="' . build_url($parsed_qs) . '">' . $title . '</a>
+  </span>';
+
+  return $button;
+}
+
+/**
+ * Helper to rebuild url
+ *
+ * @param $parsed_url
+ * @param $parsed_qs
+ * @return string
+ */
+function build_url($parsed_qs) {
+  $qs = '';
+  foreach ($parsed_qs as $k => $v) {
+    $qs .= sprintf('%s=%s&', $k, $v);
+  }
+  return get_current_path() . '?' . trim($qs, '&');
+}
+
+/**
+ * Helper to get the current path.
+ * @return mixed
+ */
+function get_current_path() {
+  $parsed_url = parse_url($_SERVER['REQUEST_URI']);
+  return $parsed_url['path'];
+}
+
+/**
+ * Helper to return a button
+ *
+ * @param $title
+ * @param $increment
+ * @param float $default
+ * @return string
+ */
+function get_threshold_button($title, $increment, $default = 0.01)  {
+  $parsed_qs = parse_qs();
+  if (isset($parsed_qs['threshold'])) {
+    $current = (float) $parsed_qs['threshold'];
+  }
+  else {
+    $current = $default;
+  }
+  $current = $current + $increment;
+  if ($current <= 0) {
+    $current = 0.01;
+  }
+  if ($current > 1) {
+    $current = 1;
+  }
+  $parsed_qs['threshold'] = $current;
+  $button = '<span class="button"><a href="' . build_url($parsed_qs) . '">' . $parsed_qs['threshold'] . '</a></span>';
+
+  return $button;
+}
