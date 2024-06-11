@@ -3,8 +3,9 @@
 require_once dirname(dirname(__FILE__)) . '/xhprof_lib/defaults.php';
 require_once XHPROF_CONFIG;
 
-include_once XHPROF_LIB_ROOT . '/display/xhprof.php';
-include (XHPROF_LIB_ROOT . "/utils/common.php");
+require_once XHPROF_LIB_ROOT . '/display/xhprof.php';
+require_once XHPROF_LIB_ROOT . "/utils/common.php";
+require_once XHPROF_LIB_ROOT . '/params.php';
 
 if (false !== $controlIPs && !in_array($_SERVER['REMOTE_ADDR'], $controlIPs))
 {
