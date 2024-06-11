@@ -33,7 +33,7 @@ ini_set('max_execution_time', 100);
   <div id="header">
   </div>
   <div id="panes">
-    <div id="editor"><?php echo $digraph; ?></div>
+    <div id="editor"></div>
     <div id="graph">
       <?php require_once(getcwd() . '/../../xhprof_lib/templates/graph_filter_options.php'); ?>
       <div id="output">

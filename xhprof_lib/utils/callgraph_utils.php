@@ -384,7 +384,7 @@ function xhprof_generate_dot_script($raw_data, $threshold, $source, $page,
 
     if ($links) {
       $endpoint = str_replace('index.php', '', $_SERVER['SCRIPT_NAME']);
-      $parts = parse_url($_SERVER['HTTP_REFERER']);
+      $parts = (isset($_SERVER['HTTP_REFERER'])) ? parse_url($_SERVER['HTTP_REFERER']) : ['path' => '/'];
       $link = ', URL="' .  $parts['path'] . '?url=' . $endpoint
         . '%3Frun=' . $_GET['run']
         . '%26links=' . $links
