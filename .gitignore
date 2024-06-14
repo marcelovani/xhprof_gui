@@ -1,6 +1,5 @@
 /nbproject
 .idea
-config.php
 docker/traces
 .env
 vendor
