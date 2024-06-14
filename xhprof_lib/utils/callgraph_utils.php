@@ -270,6 +270,9 @@ function xhprof_generate_dot_script($raw_data, $threshold, $source, $page,
         unset($raw_data[$symbol]);
       }
     }
+    // Now that the functions are filtered we don't need any further conditions.
+    // @todo update the actual conditions to stop using this variable.
+    $func='';
   }
 
   $sym_table = xhprof_compute_flat_info($raw_data, $totals);
@@ -450,8 +453,6 @@ function xhprof_generate_dot_script($raw_data, $threshold, $source, $page,
                .$height.$fontsize.$fillcolor."];\n";
   }
 
-  // Now that the functions are filtered we don't need any further conditions.
-  $func='';
   foreach ($raw_data as $parent_child => $info) {
     list($parent, $child) = xhprof_parse_parent_child($parent_child);
 
@@ -491,6 +492,7 @@ function xhprof_generate_dot_script($raw_data, $threshold, $source, $page,
 
     }
   }
+
   $result = $result . "\n}";
 
   return $result;

@@ -3,6 +3,33 @@ XHProf UI
 
 This is a graphical front end designed to store and present the profiling information provided by the Facebook created XHProf profiling tool.
 
+- Commit this code on my fork on master branch
+- Keep the other code on VR branch, not 3D
+- Now to install and run locally
+- Debug features
+- Adding traces to the folder
+- Opening a trace
+- Graphviz
+- Xhprof extension repo
+- generating sample.php
+- creating config.php
+- Add screenshots to this readme
+- Mention the original repo with theme
+- Mention SVG is interactable, fast, searchable 
+- Mention ability to click on the graph to filter
+- Mention algo to show all children
+- Mention algo to filter out in the first place, and avoid working with lots of data
+TODO
+- Make critical path work, even after filtering out functions
+- Make graph colorful based on calls to functions.
+- Add colors to lines too
+- Add the ability to filter by parents too, starting with lowest point and going backwards, which makes more sense than filtering by child. Add a toggle in the UI to choose the direcgtion.
+- When filtering by child, show connected parents for current function
+- When filtering by parent, show connected children for current function. This will allow to continue clicking and moving backwards if needed.
+- Why these two filters result in same graph>
+  - http://127.0.0.1:8000/graphviz/?url=/api/db/%3Frun=5824ff778a7c8%26links=1%26show_internal=%26func=template_preprocess_page
+  - http://127.0.0.1:8000/graphviz/?url=/api/db/%3Frun=5824ff778a7c8%26links=1%26show_internal=%26func=menu_tree_page_data
+  - 
 
 Related Tools
 -------------

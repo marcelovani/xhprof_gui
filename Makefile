@@ -29,5 +29,8 @@ db-drop:
 db-install:
 	docker-compose exec php sh -c "cat /database/install.sql | $(DB_CONN)"
 
+db-dummy-data:
+	docker-compose exec php sh -c "cat /database/dummy.sql | $(DB_CONN)"
+
 sqlc:
 	docker-compose exec php sh -c "$(DB_CONN)"
