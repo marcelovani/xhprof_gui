@@ -6,5 +6,5 @@ if (!defined('XHPROF_LIB_ROOT')) {
 }
 
 if (!defined('XHPROF_CONFIG')) {
-  define('XHPROF_CONFIG', $XHPROF_ROOT . '/config.php');
+  define('XHPROF_CONFIG', XHPROF_LIB_ROOT . '/config.php');
 }

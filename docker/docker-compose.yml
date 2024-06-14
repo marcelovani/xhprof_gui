@@ -7,12 +7,6 @@ services:
       dockerfile: php/Dockerfile
     container_name: "${COMPOSE_PROJECT_NAME}_php"
     environment:
-      DB_HOST: "${DB_HOST}"
-      DB_PORT: "${DB_PORT}"
-      DB_USER: "${DB_USER}"
-      DB_PASSWORD: "${DB_PASSWORD}"
-      DB_NAME: "${DB_NAME}"
-      DB_DRIVER: "${DB_DRIVER}"
       SITE_URL: "http://${PROJECT_BASE_URL}:${PROJECT_PORT}"
     networks:
       - local

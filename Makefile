@@ -4,13 +4,17 @@ export $(shell sed 's/=.*//' .env)
 
 build:
 	@make start
-	@make npm-install
+	@make composer-install
 	@make db-import
 
 start:
 	@echo "Starting up containers for $(PROJECT_NAME)..."
 	docker-compose pull
 	docker-compose up -d --build --remove-orphans
+
+composer-install:
+	docker-compose exec php sh -c "composer install"
+	@make db-install
 
 stop:
 	@echo "Stopping containers for $(PROJECT_NAME)..."

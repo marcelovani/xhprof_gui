@@ -32,4 +32,13 @@ RUN apk add --no-cache bash \
     && docker-php-ext-install mysqli \
     && apk add --no-cache mysql-client
 
+RUN curl -o composer-setup.php https://getcomposer.org/installer && \
+    php composer-setup.php && \
+    chmod +x composer.phar && \
+    mv composer.phar /usr/bin/composer && \
+    rm -rf composer-setup.php && \
+    composer --version
+
+WORKDIR /var/www/xhprof
+
 CMD ["php-fpm"]
