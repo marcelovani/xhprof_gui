@@ -21,7 +21,6 @@
       <option>xdot</option>
       <option>plain</option>
       <option>ps</option>
-      <option>3D</option>
     </select>
   </label>
 
@@ -37,8 +36,5 @@
     echo get_threshold_button('-', -0.01, $threshold);
     echo get_threshold_button('--', -0.1, $threshold);
     ?>
-  </span>
-  <span id="resetCamera">
-    <a onclick="resetCamera()">Reset camera</a>
   </span>
 </div>
