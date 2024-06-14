@@ -19,6 +19,7 @@ ini_set('max_execution_time', 100);
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <title>Xhprof <?php echo $run; ?></title>
+  <link rel="stylesheet" media="all" href="/css/xhprof.css">
   <link rel="stylesheet" media="all" href="/graphviz/main.css">
 <!--      <link rel="stylesheet" media="all" href="/themes/viz-edit/main.css">-->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -31,11 +32,11 @@ ini_set('max_execution_time', 100);
 
 <div id="app">
   <div id="header">
+    <?php include (getcwd() . "/header.phtml"); ?>
   </div>
   <div id="panes">
     <div id="editor"></div>
     <div id="graph">
-      <?php require_once(getcwd() . '/../../xhprof_lib/templates/graph_filter_options.php'); ?>
       <div id="output">
         <div id="error"></div>
         <?php require_once(getcwd() . '/../../xhprof_lib/templates/loader_animation.php'); ?>

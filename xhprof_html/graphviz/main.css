@@ -1,3 +1,10 @@
+.container {
+    width: 100%;
+    height: 38px;
+    margin: 0;
+    max-width: unset;
+}
+
 #app {
     display: flex;
     display: -webkit-flex;
@@ -23,6 +30,7 @@
     -webkit-flex: 1 1 auto;
     position: relative;
     overflow: auto;
+    background-color: white;
 }
 
 /*#output {*/
@@ -67,12 +75,11 @@
 
 #options {
     flex: 0 0 auto;
-    background: #eee;
-    border-bottom: 1px solid #ccc;
     padding: 8px;
     -webkit-flex: 0 0 auto;
     font-family: "Lucida Grande", Sans-Serif;
     font-size: 14px;
+    margin: auto 20px;
 }
 
 #options a {
@@ -92,6 +99,10 @@
 
 #output svg rect:nth-child(2) {
     fill: gray;
+}
+
+#options {
+    float: right;
 }
 
 #options .threshold {
@@ -186,5 +197,10 @@
     background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
     background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
     text-decoration: none;
+}
+
+#status {
+    background: lightgrey;
+    padding: 0 5px;
 }
 
