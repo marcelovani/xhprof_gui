@@ -14,6 +14,7 @@
         formatEl = document.querySelector("#format select"),
         engineEl = document.querySelector("#engine select"),
         rawEl = document.querySelector("#raw input"),
+        showInternalEl = document.querySelector("#show_internal"),
         shareEl = document.querySelector("#share"),
         shareURLEl = document.querySelector("#shareurl"),
         errorEl = document.querySelector("#error");
@@ -121,6 +122,27 @@
         }
         return result;
     };
+
+    function updateGraph(event) {
+        const url = window.location;
+        const protocol = window.location.protocol;
+        const host = window.location.hostname;
+        const port = window.location.port;
+        const path = window.location.pathname;
+        let query = window.location.search;
+
+        let el = event.currentTarget;
+        let show_internal = null;
+        if (event.type == 'click') {
+            if (event.target.getAttribute('id') == 'show_internal') {
+                show_internal = el.classList.contains('is-pressed') ? '0' : '1';
+                const regexPattern = /(show_internal=)\d{1}/;
+                query = query.replace(regexPattern, '$1' + show_internal);
+            }
+        }
+        const updated_url = protocol + '//' + host + ':' + port + path + query;
+        window.location.href = updated_url;
+    }
 
     function renderGraph() {
         reviewer.classList.add("working");
@@ -262,6 +284,7 @@
     formatEl.addEventListener("change", renderGraph);
     engineEl.addEventListener("change", renderGraph);
     rawEl.addEventListener("change", renderGraph);
+    showInternalEl.addEventListener("click", updateGraph);
 
     if (typeof share != 'undefined') {
         share.addEventListener("click", copyShareURL);

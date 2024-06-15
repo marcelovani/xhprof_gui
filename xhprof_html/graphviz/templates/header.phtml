@@ -1,5 +1,5 @@
 <?php require_once getcwd() . '/../../xhprof_lib/utils/common.php'; ?>
-<?php // echo get_home_button(); ?>
+
 <div class="container">
     <div class="dash-header">
         <div class="xh-title-wrap">
@@ -35,15 +35,8 @@
                     <input type="checkbox"> Show raw output
                 </label>
 
-                <?php echo get_show_internal_button('Show internal functions', 1); ?>
-                <span class="threshold">Threshold
-                    <?php
-                    echo get_threshold_button('++', 0.1, $threshold);
-                    echo get_threshold_button('+', 0.01, $threshold);
-                    echo get_threshold_button('-', -0.01, $threshold);
-                    echo get_threshold_button('--', -0.1, $threshold);
-                    ?>
-                </span>
+                <?php include ("internal_functions.phtml"); ?>
+                <?php include ("threshold.phtml"); ?>
             </form>
         </div>
     </div>

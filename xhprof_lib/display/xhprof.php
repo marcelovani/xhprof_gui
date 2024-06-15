@@ -1073,7 +1073,6 @@ function symbol_report($url_params,
       print('</tr>');
     }
 
-
     foreach ($metrics as $metric) {
       $m = $metric;
 
@@ -1123,8 +1122,11 @@ function symbol_report($url_params,
 //  $callgraph_href = "$base_path/graphviz/?"
 //    . http_build_query(xhprof_array_set($url_params, 'func', $rep_symbol));
 //  print(" <a class='callgraph' href='$callgraph_href'>View Callgraph $diff_text</a><br />");
+
   $id = @$_GET['run'];
-  print('<a href="/graphviz/?url=/api/db/%3Frun=' . $id . '%26links=1%26show_internal=0%26func=' . $rep_symbol . '" class="callgraph form-button">Callgraph</a>');
+  // @todo create a function to remove duplicated code below.
+  $si = isset($_GET['show_internal']) ? $_GET['show_internal'] : 0;
+  print('<a href="/graphviz/?url=/api/db/%3Frun=' . $id . '%26links=1%26show_internal=' . $si . '%26func=' . $rep_symbol . '" class="callgraph form-button">Callgraph</a>');
 
   print("<br />");
 

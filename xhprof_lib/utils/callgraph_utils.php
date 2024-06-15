@@ -676,3 +676,29 @@ function filter_out_functions($data, $func) {
   return $interested;
 }
 
+/**
+ * Helper to parse the query string.
+ *
+ * @return array
+ */
+function parse_qs()
+{
+    // Get the query string.
+    $parsed_url = parse_url($_SERVER['REQUEST_URI']);
+    $qs = $parsed_url['query'];
+
+    // Extract arguments from the endpoint.
+    $endpoint_args = explode('%3F', $qs);
+    $args = explode('%26', $endpoint_args[1]);
+
+    // Build an array with arguments.
+    $result = [];
+    foreach ($args as $param) {
+        $kv = explode('=', $param);
+        if (isset($kv[1])) {
+            $result[$kv[0]] = $kv[1];
+        }
+    }
+
+    return $result;
+}

@@ -3,6 +3,8 @@
  * @file This file is responsible for loading config from .env
  */
 
+ini_set('max_execution_time', 100);
+
 use Symfony\Component\Dotenv\Dotenv;
 
 # Load .env.

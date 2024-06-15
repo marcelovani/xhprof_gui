@@ -10,8 +10,6 @@ if (false !== $controlIPs && !in_array($_SERVER['REMOTE_ADDR'], $controlIPs))
 
 include_once XHPROF_LIB_ROOT . '/display/xhprof.php';
 
-ini_set('max_execution_time', 100);
-
 $xhprof_runs_impl = new XHProfRuns_Default();
 
 if (!empty($run)) {
