@@ -677,19 +677,32 @@ function filter_out_functions($data, $func) {
 }
 
 /**
- * Helper to parse the query string.
+ * Splits the parts of the base url and the API url.
  *
  * @return array
  */
-function parse_qs()
-{
-    // Get the query string.
-    $parsed_url = parse_url($_SERVER['REQUEST_URI']);
-    $qs = $parsed_url['query'];
-
-    // Extract arguments from the endpoint.
+function xhprof_parse_uri() {
+    $parsed_uri = parse_url($_SERVER['REQUEST_URI']);
+    $qs = $parsed_uri['query'];
     $endpoint_args = explode('%3F', $qs);
-    $args = explode('%26', $endpoint_args[1]);
+
+    return array_merge($parsed_uri, [
+       'api' => [
+           'path' => $endpoint_args[0],
+           'query' => $endpoint_args[1],
+       ]
+    ]);
+}
+
+/**
+ * Helper to parse the endpoint uri.
+ *
+ * @return array
+ */
+function xhprof_parse_endpoint_uri()
+{
+    $parsed_uri = xhprof_parse_uri();
+    $args = explode('%26', $parsed_uri['api']['query']);
 
     // Build an array with arguments.
     $result = [];
@@ -702,3 +715,18 @@ function parse_qs()
 
     return $result;
 }
+
+/**
+ * Helper to put together the uri parts again,
+ *
+ * @param array $parts
+ *   The parsed uri arguments.
+ *
+ * @return string
+ *   The uri
+ */
+//function xhprof_build_endpoint_url($parts) {
+////    $base_uri = xhprof_parse_uri();
+//    $endpoint_url = xhprof_build_url($parts);
+//    var_dump(__FUNCTION__, $base_uri, $parts, $endpoint_url);exit;
+//}

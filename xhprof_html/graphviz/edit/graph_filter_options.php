@@ -27,6 +27,10 @@
     <input type="checkbox" disabled=""> Show raw output
   </label>
 
+  <label id="show_internal">
+    <input type="checkbox" disabled=""> Show internal
+  </label>
+
   <label>
     <a href="#" target="_blank" id="download">Download</a>
   </label>

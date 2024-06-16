@@ -1125,7 +1125,7 @@ function symbol_report($url_params,
 
   $id = @$_GET['run'];
   // @todo create a function to remove duplicated code below.
-  $si = isset($_GET['show_internal']) ? $_GET['show_internal'] : 0;
+  $si = !empty($_GET['show_internal']) ? $_GET['show_internal'] : '0';
   print('<a href="/graphviz/?url=/api/db/%3Frun=' . $id . '%26links=1%26show_internal=' . $si . '%26func=' . $rep_symbol . '" class="callgraph form-button">Callgraph</a>');
 
   print("<br />");

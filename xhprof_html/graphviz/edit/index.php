@@ -12,6 +12,7 @@
           referrerpolicy="no-referrer"></script>
   <script src="//cdn.jsdelivr.net/npm/svg-pan-zoom@3.5.0/dist/svg-pan-zoom.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.34.2/ace.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-toggle-state/1.16.0/easy-toggle-state.min.js"></script>
 </head>
 <body>
 <pre id="editor"></pre>

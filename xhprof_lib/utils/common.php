@@ -127,19 +127,16 @@ function getFilter($filterName)
 }
 
 /**
- * Helper for home url.
+ * Helper for report url.
  *
  * @return string
  */
-function get_home_url()
+function xhprof_get_report_url()
 {
-    $qs = '';
-    foreach (parse_qs() as $k => $v) {
-        $qs .= sprintf('%s=%s&', $k, $v);
-    }
-    $url = '/?' . trim($qs, '&');
+    $uri = xhprof_parse_endpoint_uri();
+    $url = xhprof_build_query_string($uri);
 
-    return $url;
+    return '/?' . $url;
 }
 
 /**
@@ -149,42 +146,63 @@ function get_home_url()
  * @param $parsed_qs
  * @return string
  */
-function build_url($parsed_qs)
+function xhprof_build_url($parsed_qs)
 {
+    $base_uri = xhprof_parse_uri();
+
+    $qs = xhprof_build_query_string($parsed_qs);
+    $qs = str_replace('&', '%26', $qs);
+    $url = $base_uri['path'] . '?' . $base_uri['api']['path'] . '%3F' . $qs;
+
+    return $url;
+}
+
+/**
+ * Builds a query string from uri parts.
+ *
+ * @param array $parts
+ *   The query string arguments
+ * @return string
+ *   The query string
+ */
+function xhprof_build_query_string($parts) {
     $qs = '';
-    foreach ($parsed_qs as $k => $v) {
+    foreach ($parts as $k => $v) {
         $qs .= sprintf('%s=%s&', $k, $v);
     }
-    return get_current_path() . '?' . trim($qs, '&');
+    $qs = trim($qs, '&');
+
+    return $qs;
 }
 
 /**
  * Helper to get the current path.
  * @return mixed
  */
-function get_current_path()
+function xhprof_get_request_path()
 {
     $parsed_url = parse_url($_SERVER['REQUEST_URI']);
+var_dump($parsed_url);
     return $parsed_url['path'];
 }
 
 /**
- * Helper to return a button
- * @todo move this and others to the graphviz folder
+ * Helper to return markup for the threshold button
  *
  * @param $title
  * @param $increment
  * @param float $default
  * @return string
  */
-function get_threshold_button($title, $increment, $default = 0.01)
+function xhprof_get_threshold_button($title, $increment, $default = 0.01)
 {
-    //$parsed_qs = parse_qs(); @todo delete function
-    if (isset($parsed_qs['threshold'])) {
-        $current = (float)$parsed_qs['threshold'];
+    $api_uri = xhprof_parse_endpoint_uri();
+    if (isset($api_uri['threshold'])) {
+        $current = (float) $api_uri['threshold'];
     } else {
         $current = $default;
     }
+
     $current = $current + $increment;
     if ($current <= 0) {
         $current = 0.01;
@@ -192,8 +210,13 @@ function get_threshold_button($title, $increment, $default = 0.01)
     if ($current > 1) {
         $current = 1;
     }
-    $parsed_qs['threshold'] = $current;
-    $button = '<span class="button form-button"><a href="' . build_url($parsed_qs) . '">' . $parsed_qs['threshold'] . '</a></span>';
+    $api_uri['threshold'] = $current;
 
-    return $button;
+    $url = xhprof_build_url($api_uri);
+//    $url = xhprof_build_endpoint_url($api_uri);
+//    var_dump($base_uri, $api_uri, $url);
+//exit;
+    return "<span class=\"button form-button\"><a href=\"$url\">$current</a></span>";
+//var_dump($button);exit;
+    return $markup;
 }
