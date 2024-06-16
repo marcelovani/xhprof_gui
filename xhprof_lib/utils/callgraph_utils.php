@@ -288,9 +288,43 @@ function xhprof_generate_dot_script($raw_data, $threshold, $source, $page,
     }
   }
 
+    // if it is a benchmark callgraph, we make the benchmarked function the root.
+    if ($source == "bm" && array_key_exists("main()", $sym_table)) {
+        $total_times = $sym_table["main()"]["ct"];
+        $remove_funcs = array("main()",
+            "hotprofiler_disable",
+            "call_user_func_array",
+            "xhprof_disable");
+
+        foreach ($remove_funcs as $cur_del_func) {
+            if (array_key_exists($cur_del_func, $sym_table) &&
+                $sym_table[$cur_del_func]["ct"] == $total_times) {
+                unset($sym_table[$cur_del_func]);
+            }
+        }
+    }
+
+    // Filter out functions whose exclusive time ratio is below threshold, and
+    // also assign a unique integer id for each function to be generated. In the
+    // meantime, find the function with the most exclusive time (potentially the
+    // performance bottleneck).
+    $cur_id = 0; $max_wt = 0;
+    foreach ($sym_table as $symbol => $info) {
+        if (empty($func) && abs($info["wt"] / $totals["wt"]) < $threshold) {
+            unset($sym_table[$symbol]);
+            continue;
+        }
+        if ($max_wt == 0 || $max_wt < abs($info["excl_wt"])) {
+            $max_wt = abs($info["excl_wt"]);
+        }
+        $sym_table[$symbol]["id"] = $cur_id;
+        $cur_id ++;
+    }
+
   if ($critical_path) {
     $children_table = xhprof_get_children_table($raw_data);
-    $node = "main()";
+    array_pop($sym_table);
+    $node = array_key_last($sym_table);
     $path = array();
     $path_edges = array();
     $visited = array();
@@ -304,10 +338,8 @@ function xhprof_generate_dot_script($raw_data, $threshold, $source, $page,
             continue;
           }
           if ($max_child === null ||
-            abs($raw_data[xhprof_build_parent_child_key($node,
-                                                        $child)]["wt"]) >
-            abs($raw_data[xhprof_build_parent_child_key($node,
-                                                        $max_child)]["wt"])) {
+            abs($raw_data[xhprof_build_parent_child_key($node, $child)]["wt"]) >
+            abs($raw_data[xhprof_build_parent_child_key($node, $max_child)]["wt"])) {
             $max_child = $child;
           }
         }
@@ -322,42 +354,9 @@ function xhprof_generate_dot_script($raw_data, $threshold, $source, $page,
     }
   }
 
-  // if it is a benchmark callgraph, we make the benchmarked function the root.
- if ($source == "bm" && array_key_exists("main()", $sym_table)) {
-    $total_times = $sym_table["main()"]["ct"];
-    $remove_funcs = array("main()",
-                          "hotprofiler_disable",
-                          "call_user_func_array",
-                          "xhprof_disable");
-
-    foreach ($remove_funcs as $cur_del_func) {
-      if (array_key_exists($cur_del_func, $sym_table) &&
-          $sym_table[$cur_del_func]["ct"] == $total_times) {
-        unset($sym_table[$cur_del_func]);
-      }
-    }
-  }
-
   $result = "digraph call_graph {\n";
   $result .= 'graph [label="" style="filled" fontstyle="bold" fontname="Arial" ssize="30,60" fontsize="40" ];' . PHP_EOL;
   $result .= 'node [shape="box" style="filled" fontname="Arial" fontsize="11" caption="function" ];' . PHP_EOL;
-
-  // Filter out functions whose exclusive time ratio is below threshold, and
-  // also assign a unique integer id for each function to be generated. In the
-  // meantime, find the function with the most exclusive time (potentially the
-  // performance bottleneck).
-  $cur_id = 0; $max_wt = 0;
-  foreach ($sym_table as $symbol => $info) {
-    if (empty($func) && abs($info["wt"] / $totals["wt"]) < $threshold) {
-      unset($sym_table[$symbol]);
-      continue;
-    }
-    if ($max_wt == 0 || $max_wt < abs($info["excl_wt"])) {
-      $max_wt = abs($info["excl_wt"]);
-    }
-    $sym_table[$symbol]["id"] = $cur_id;
-    $cur_id ++;
-  }
 
   // Generate all nodes' information.
   foreach ($sym_table as $symbol => $info) {
