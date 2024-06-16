@@ -13,8 +13,8 @@
         showError = null,
         formatEl = document.querySelector("#format select"),
         engineEl = document.querySelector("#engine select"),
-        rawEl = document.querySelector("#raw input"),
-        showInternalEl = document.querySelector("#show_internal"),
+        rawEl = document.querySelector("#raw input") || null,
+        showInternalEl = document.querySelector("#show_internal") || null,
         shareEl = document.querySelector("#share"),
         shareURLEl = document.querySelector("#shareurl"),
         errorEl = document.querySelector("#error");
@@ -188,12 +188,14 @@
     }
 
     function updateOutput(result) {
-        if (formatEl.value === "svg") {
-            document.querySelector("#raw").classList.remove("disabled");
-            rawEl.disabled = false;
-        } else {
-            document.querySelector("#raw").classList.add("disabled");
-            rawEl.disabled = true;
+        if (rawEl !== null) {
+            if (formatEl.value === "svg") {
+                document.querySelector("#raw").classList.remove("disabled");
+                rawEl.disabled = false;
+            } else {
+                document.querySelector("#raw").classList.add("disabled");
+                rawEl.disabled = true;
+            }
         }
 
         var text = reviewer.querySelector("#text");
@@ -213,7 +215,7 @@
         reviewer.classList.remove("working");
         reviewer.classList.remove("error");
 
-        if (formatEl.value == "svg" && !rawEl.checked) {
+        if (formatEl.value == "svg" && rawEl === null || !rawEl.checked) {
             var svg = parser.parseFromString(result, "image/svg+xml");
             //get svg source.
             var serializer = new XMLSerializer();
@@ -283,7 +285,10 @@
 
     formatEl.addEventListener("change", renderGraph);
     engineEl.addEventListener("change", renderGraph);
-    rawEl.addEventListener("change", renderGraph);
+
+    if (rawEl !== null)
+        rawEl.addEventListener("change", renderGraph);
+
     showInternalEl.addEventListener("click", updateGraph);
 
     if (typeof share != 'undefined') {
