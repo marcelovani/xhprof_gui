@@ -714,18 +714,3 @@ function xhprof_parse_endpoint_uri()
 
     return $result;
 }
-
-/**
- * Helper to put together the uri parts again,
- *
- * @param array $parts
- *   The parsed uri arguments.
- *
- * @return string
- *   The uri
- */
-//function xhprof_build_endpoint_url($parts) {
-////    $base_uri = xhprof_parse_uri();
-//    $endpoint_url = xhprof_build_url($parts);
-//    var_dump(__FUNCTION__, $base_uri, $parts, $endpoint_url);exit;
-//}
